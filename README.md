@@ -6,7 +6,8 @@
 
 基于 **Next.js 16**、**Vercel Postgres**、**Shadcn UI** 和 **Linux DO Connect** 构建的强大的无服务器虚拟商品商店。
 
-> 💡 **也提供 Cloudflare Workers 版本：** [查看部署指南 → `_workers_v2/README.md`](./_workers_v2/README.md)
+> 💡 **也提供 Cloudflare Workers 版本 (Next.js + OpenNext + D1)：** [查看部署指南 → `_workers_next/README.md`](./_workers_next/README.md)
+> 这是一个基于 OpenNext 适配器的全栈 Next.js 实现，运行在 Cloudflare Workers 上并使用 D1 数据库，提供与 Vercel 版本一致的功能体验。
 
 ## ✨ 特性
 - **现代技术栈**: Next.js 16 (App Router), Tailwind CSS, TypeScript.
@@ -74,7 +75,7 @@
 
 ## ☁️ Cloudflare Workers 命令部署
 
-请参考 [`_workers_v2/README.md`](./_workers_v2/README.md) 使用 Wrangler 命令部署与配置。
+请参考 [`_workers_next/README.md`](./_workers_next/README.md) 使用 Wrangler 命令部署与配置。
 
 ## 🐳 Docker 一般部署 (Docker Compose)
 

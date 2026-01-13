@@ -1,13 +1,25 @@
-# LDC Shop (Next.js Edition)
+# LDC Shop (Cloudflare Workers Edition)
 
 [中文说明](./README.md)
 
 ---
 
-A robust, serverless virtual goods shop built with **Next.js 16**, **Vercel Postgres**, **Shadcn UI**, and **Linux DO Connect**.
 
-> 💡 **Also available as Cloudflare Workers version (Next.js + OpenNext + D1):** [View deployment guide → `_workers_next/README.md`](./_workers_next/README.md)
-> This is a full-stack Next.js implementation based on OpenNext adapter, running on Cloudflare Workers with D1 database, providing the same feature set as the Vercel version.
+Serverless virtual goods store built with **Next.js 16**, **Cloudflare Workers** (OpenNext), **D1 Database**, and **Shadcn UI**.
+
+## 🛠 Technical Architecture
+
+This version adopts the cutting-edge **Next.js on Workers** approach, rather than a traditional single-file Worker:
+
+*   **Core Framework**: **Next.js 16 (App Router)** - Maintains the same modern development experience as the Vercel version.
+*   **Adapter**: **OpenNext (Cloudflare Adapter)** - The most advanced solution for deployed Next.js on Workers, supporting most Next.js features.
+*   **Database**: **Cloudflare D1 (SQLite)** - Edge-native relational database, replacing Vercel Postgres.
+*   **ORM**: **Drizzle ORM** - Perfectly adapted for D1, providing type-safe SQL operations.
+*   **Deployment**: **Wrangler** - One-click deployment to the global edge network.
+
+This architecture aims to combine the development efficiency of Next.js with the edge performance and low cost advantages of Cloudflare.
+
+
 
 ## ✨ Features
 - **Modern Stack**: Next.js 16 (App Router), Tailwind CSS, TypeScript.
@@ -59,7 +71,7 @@ The database (Vercel Postgres) will be automatically provisioned and linked.
 
 ## ☁️ Cloudflare Workers Command Deploy
 
-See [`_workers_next/README.md`](./_workers_next/README.md) for Wrangler-based deployment and configuration steps.
+See [`_workers_v2/README.md`](./_workers_v2/README.md) for Wrangler-based deployment and configuration steps.
 
 ## 💡 Recommendation: Custom Domain
 

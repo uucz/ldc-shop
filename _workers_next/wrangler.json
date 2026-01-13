@@ -1,0 +1,32 @@
+{
+    "name": "ldc-shop-next",
+    "main": ".open-next/worker.js",
+    "compatibility_date": "2025-11-12",
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
+    "assets": {
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
+    },
+    "d1_databases": [
+        {
+            "binding": "DB",
+            "database_name": "ldc-shop-next",
+            "database_id": "DB_ID_PLACEHOLDER",
+            "migrations_dir": "src/lib/db/migrations"
+        }
+    ],
+    "observability": {
+        "enabled": true
+    },
+    "routes": [
+        {
+            "pattern": "shop.example.com",
+            "custom_domain": true
+        }
+    ],
+    "vars": {
+        "NEXT_PUBLIC_APP_URL": "https://shop.example.com"
+    }
+}

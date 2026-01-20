@@ -227,7 +227,7 @@ export async function HomeContent({ products, announcement, visitorCount, catego
                         )}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
                         {products.map((product, index) => (
                             <Card
                                 key={product.id}
@@ -288,7 +288,7 @@ export async function HomeContent({ products, announcement, visitorCount, catego
                                 <CardFooter className="p-4 pt-0 flex flex-wrap items-center gap-3 mt-auto border-t border-border/30 bg-muted/5">
                                     <div className="flex min-w-0 flex-1 flex-col">
                                         <div className="flex items-baseline gap-2">
-                                            <span className="text-lg font-bold text-primary tabular-nums break-all">{Number(product.price)}</span>
+                                            <span className="text-lg font-bold text-primary tabular-nums whitespace-nowrap">{Number(product.price)}</span>
                                             <span className="text-xs text-muted-foreground font-medium uppercase">{t('common.credits')}</span>
                                             {product.compareAtPrice && Number(product.compareAtPrice) > Number(product.price) && (
                                                 <span className="text-xs text-muted-foreground/70 line-through tabular-nums">

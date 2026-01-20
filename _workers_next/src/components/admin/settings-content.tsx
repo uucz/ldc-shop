@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TrendingUp, ShoppingCart, CreditCard, Package, Users } from "lucide-react"
-import { saveShopName, saveShopDescription, saveShopLogo, saveShopFooter, saveThemeColor, saveLowStockThreshold, saveCheckinReward, saveCheckinEnabled, saveNoIndex, saveRefundReclaimCards } from "@/actions/admin"
+import { saveShopName, saveShopDescription, saveShopLogo, saveShopFooter, saveThemeColor, saveLowStockThreshold, saveCheckinReward, saveCheckinEnabled, saveNoIndex, saveRefundReclaimCards, saveRegistryHideNav } from "@/actions/admin"
 import { checkForUpdates } from "@/actions/update-check"
 import { joinRegistry } from "@/actions/registry"
 import { toast } from "sonner"
@@ -33,6 +33,7 @@ interface AdminSettingsContentProps {
     checkinEnabled: boolean
     noIndexEnabled: boolean
     refundReclaimCards: boolean
+    registryHideNav: boolean
     registryOptIn: boolean
     registryEnabled: boolean
 }
@@ -61,7 +62,7 @@ const THEME_COLORS = [
     { value: 'pink', hue: 330 },
 ]
 
-export function AdminSettingsContent({ stats, shopName, shopDescription, shopLogo, shopFooter, themeColor, visitorCount, lowStockThreshold, checkinReward, checkinEnabled, noIndexEnabled, refundReclaimCards, registryOptIn, registryEnabled }: AdminSettingsContentProps) {
+export function AdminSettingsContent({ stats, shopName, shopDescription, shopLogo, shopFooter, themeColor, visitorCount, lowStockThreshold, checkinReward, checkinEnabled, noIndexEnabled, refundReclaimCards, registryHideNav, registryOptIn, registryEnabled }: AdminSettingsContentProps) {
     const { t } = useI18n()
 
     // State
@@ -89,6 +90,8 @@ export function AdminSettingsContent({ stats, shopName, shopDescription, shopLog
     const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
     const [submittingRegistry, setSubmittingRegistry] = useState(false)
     const [registryJoined, setRegistryJoined] = useState(registryOptIn)
+    const [hideRegistryNav, setHideRegistryNav] = useState(registryHideNav)
+    const [savingRegistryNav, setSavingRegistryNav] = useState(false)
 
     const handleSaveShopName = async () => {
         const trimmed = shopNameValue.trim()
@@ -191,6 +194,19 @@ export function AdminSettingsContent({ stats, shopName, shopDescription, shopLog
             toast.error(e.message)
         } finally {
             setSavingNoIndex(false)
+        }
+    }
+
+    const handleToggleRegistryNav = async (checked: boolean) => {
+        setSavingRegistryNav(true)
+        try {
+            await saveRegistryHideNav(checked)
+            setHideRegistryNav(checked)
+            toast.success(t('common.success'))
+        } catch (e: any) {
+            toast.error(e.message)
+        } finally {
+            setSavingRegistryNav(false)
         }
     }
 
@@ -591,6 +607,26 @@ export function AdminSettingsContent({ stats, shopName, shopDescription, shopLog
                                 {registryJoined ? t('registry.statusJoined') : t('registry.statusNotJoined')}
                             </span>
                         </div>
+                        {!registryJoined && (
+                            <div className="space-y-2 pt-2">
+                                <div className="flex items-center justify-between gap-4">
+                                    <Label htmlFor="registry-hide-nav" className="cursor-pointer">
+                                        {t('registry.hideNavLabel')}
+                                    </Label>
+                                    <Button
+                                        id="registry-hide-nav"
+                                        variant={hideRegistryNav ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => handleToggleRegistryNav(!hideRegistryNav)}
+                                        disabled={savingRegistryNav}
+                                        className={hideRegistryNav ? "bg-slate-900 hover:bg-slate-800 text-white" : ""}
+                                    >
+                                        {hideRegistryNav ? t('registry.hideNavEnabled') : t('registry.hideNavDisabled')}
+                                    </Button>
+                                </div>
+                                <p className="text-xs text-muted-foreground">{t('registry.hideNavHint')}</p>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             )}

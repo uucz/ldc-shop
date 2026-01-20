@@ -15,6 +15,7 @@ import { SignOutButton } from "@/components/signout-button"
 import { HeaderLogo, HeaderNav, HeaderSearch, HeaderUserMenuItems, HeaderUnreadBadge, LanguageSwitcher } from "@/components/header-client-parts"
 import { ModeToggle } from "@/components/mode-toggle"
 import { getSetting, recordLoginUser, setSetting, getUserUnreadNotificationCount } from "@/lib/db/queries"
+import { isRegistryEnabled } from "@/lib/registry"
 import { CheckInButton } from "@/components/checkin-button"
 
 export async function SiteHeader() {
@@ -60,6 +61,24 @@ export async function SiteHeader() {
         checkinEnabled = true
     }
 
+    const registryEnabled = isRegistryEnabled()
+    let registryOptIn = false
+    let registryHideNav = false
+    if (registryEnabled) {
+        try {
+            const [optIn, hideNav] = await Promise.all([
+                getSetting('registry_opt_in'),
+                getSetting('registry_hide_nav')
+            ])
+            registryOptIn = optIn === 'true'
+            registryHideNav = hideNav === 'true'
+        } catch {
+            registryOptIn = false
+            registryHideNav = false
+        }
+    }
+    const showNavigator = registryEnabled && (registryOptIn || !registryHideNav)
+
     let unreadCount = 0
     if (user?.id) {
         try {
@@ -74,7 +93,7 @@ export async function SiteHeader() {
             <div className="container flex h-16 items-center gap-2 md:gap-3">
                 <div className="flex items-center gap-4 md:gap-8 min-w-0">
                     <HeaderLogo adminName={firstAdminName} shopNameOverride={shopNameOverride} shopLogoOverride={shopLogoOverride} />
-                    <HeaderNav isAdmin={isAdmin} isLoggedIn={!!user} />
+                    <HeaderNav isAdmin={isAdmin} isLoggedIn={!!user} showNav={showNavigator} />
                 </div>
                 <div className="hidden md:flex flex-1 justify-center px-4">
                     {/* HeaderSearch removed as per user request */}
@@ -106,7 +125,7 @@ export async function SiteHeader() {
                                         <CheckInButton enabled={checkinEnabled} />
                                     </div>
                                     <DropdownMenuSeparator />
-                                    <HeaderUserMenuItems isAdmin={isAdmin} />
+                                    <HeaderUserMenuItems isAdmin={isAdmin} showNav={showNavigator} />
                                     <DropdownMenuSeparator />
                                     <SignOutButton />
                                 </DropdownMenuContent>

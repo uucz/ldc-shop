@@ -54,6 +54,7 @@ interface BuyContentProps {
     reviewCount?: number
     canReview?: boolean
     reviewOrderId?: string
+    emailEnabled?: boolean
 }
 
 export function BuyContent({
@@ -65,7 +66,8 @@ export function BuyContent({
     averageRating = 0,
     reviewCount = 0,
     canReview = false,
-    reviewOrderId
+    reviewOrderId,
+    emailEnabled = true
 }: BuyContentProps) {
     const { t } = useI18n()
     const [shareUrl, setShareUrl] = useState('')
@@ -309,6 +311,7 @@ export function BuyContent({
                                                     productName={product.name}
                                                     quantity={quantity}
                                                     autoOpen={warningConfirmed && !!product.purchaseWarning}
+                                                    emailEnabled={emailEnabled}
                                                 />
                                             )}
                                         </div>

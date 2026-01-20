@@ -18,9 +18,10 @@ interface BuyButtonProps {
     disabled?: boolean
     quantity?: number
     autoOpen?: boolean // Auto-open dialog when mounted (for after warning confirmation)
+    emailEnabled?: boolean
 }
 
-export function BuyButton({ productId, price, productName, disabled, quantity = 1, autoOpen = false }: BuyButtonProps) {
+export function BuyButton({ productId, price, productName, disabled, quantity = 1, autoOpen = false, emailEnabled = true }: BuyButtonProps) {
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [points, setPoints] = useState(0)
@@ -64,7 +65,7 @@ export function BuyButton({ productId, price, productName, disabled, quantity = 
 
         try {
             setLoading(true)
-            const result = await createOrder(productId, quantity, email, usePoints)
+            const result = await createOrder(productId, quantity, emailEnabled ? email : '', usePoints)
 
             if (!result?.success) {
                 const message = result?.error ? t(result.error) : t('common.error')
@@ -147,6 +148,7 @@ export function BuyButton({ productId, price, productName, disabled, quantity = 
                             <span>{numericalPrice.toFixed(2)}</span>
                         </div>
 
+                    {emailEnabled && (
                         <div className="space-y-2">
                             <Label htmlFor="email">{t('buy.modal.emailLabel')}</Label>
                             <Input
@@ -157,6 +159,7 @@ export function BuyButton({ productId, price, productName, disabled, quantity = 
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
+                    )}
 
                         {points > 0 && (
                             <div className="flex items-center space-x-2 border p-3 rounded-md">

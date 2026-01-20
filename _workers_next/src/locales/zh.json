@@ -684,6 +684,10 @@
         "navSearch": "搜索站点...",
         "search": "搜索",
         "navEmpty": "暂无站点",
-        "visit": "访问"
+        "visit": "访问",
+        "hideNavLabel": "隐藏导航入口",
+        "hideNavHint": "未加入导航时可隐藏顶部/底部的 LDC 导航入口。",
+        "hideNavEnabled": "已隐藏",
+        "hideNavDisabled": "显示中"
     }
 }

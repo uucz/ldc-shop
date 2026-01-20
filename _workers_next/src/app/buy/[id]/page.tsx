@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { auth } from "@/lib/auth"
 import { BuyContent } from "@/components/buy-content"
 import { getProduct, getProductReviews, getProductRating, canUserReview } from "@/lib/db/queries"
+import { getEmailSettings } from "@/lib/email"
 import { unstable_cache } from "next/cache"
 
 export const dynamic = 'force-dynamic'
@@ -36,11 +37,12 @@ export default async function BuyPage({ params }: BuyPageProps) {
     )()
 
     // Run all queries in parallel for better performance
-    const [session, product, reviews, rating] = await Promise.all([
+    const [session, product, reviews, rating, emailSettings] = await Promise.all([
         auth(),
         getCachedProduct().catch(() => null),
         getCachedReviews().catch(() => []),
-        getCachedRating().catch(() => ({ average: 0, count: 0 }))
+        getCachedRating().catch(() => ({ average: 0, count: 0 })),
+        getEmailSettings().catch(() => ({ apiKey: null, fromEmail: null, enabled: false, fromName: null }))
     ])
 
     // Return 404 if product doesn't exist or is inactive
@@ -69,6 +71,7 @@ export default async function BuyPage({ params }: BuyPageProps) {
             reviewCount={rating.count}
             canReview={userCanReview.canReview}
             reviewOrderId={userCanReview.orderId}
+            emailEnabled={!!(emailSettings?.enabled && emailSettings?.apiKey && emailSettings?.fromEmail)}
         />
     )
 }
